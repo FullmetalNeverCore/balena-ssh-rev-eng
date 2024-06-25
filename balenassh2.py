@@ -59,8 +59,8 @@ async def connect_to_websocket(uri):
         #     user_input = input()
         #     if user_input.lower() == 'exit':
         #         break
-        SESSION_ID = 1
-        DEVICE_UID = 1
+        SESSION_ID = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIyMzgwLCJqd3Rfc2VjcmV0IjoiTjJFRk9PM1RTTkZJS0pITkhITU5RTVdaWU4zNUVYRkYiLCJhdXRoVGltZSI6MTcxODk4NDAwNTAwMywiaWF0IjoxNzE5MjM5MzQ2LCJleHAiOjE3MTk4NDQxNDZ9.0HLN2PZrXygHX7PfGOqwugRU5k26gpLn9R1rSEFfylA"
+        DEVICE_UID = "ff83db242d8dcc5337a09dd124fb6f45"
         await send_message(f"2probe")
         response = await receive_message()
 
@@ -78,6 +78,10 @@ async def connect_to_websocket(uri):
         await receive_message()
         await receive_message()
         await receive_message()
+        await send_message(f'42["data","pwd"]')
+        await receive_message()
+        await send_message('42["data","\\r"]')
+        await receive_message()
         for x in cmd:
             await send_message(f'42["data","{x}"]')
             await receive_message()
@@ -91,7 +95,6 @@ async def connect_to_websocket(uri):
 async def main():
     sid = get_initial_connection(get_url_string())
     websocket_url = f'wss://terminal.balena-devices.com/socket.io/?EIO=4&transport=websocket&sid={sid}'
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIyMzgwLCJqd3Rfc2VjcmV0IjoiTjJFRk9PM1RTTkZJS0pITkhITU5RTVdaWU4zNUVYRkYiLCJhdXRoVGltZSI6MTcxODk4NDAwNTAwMywiaWF0IjoxNzE5MjM5NTE4LCJleHAiOjE3MTk4NDQzMTh9.i4NNfrcnC9RuhdlcNUebGFaeXq_IqZ-MvLzQQZZLxY8'
     print(sid)
     secondStrangeRequest(f'{get_url_string()}&sid={sid}',"40")
     await connect_to_websocket(websocket_url)
