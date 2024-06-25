@@ -43,7 +43,7 @@ def secondStrangeRequest(url,content):
 
 async def connect_to_websocket(uri):
     async with websockets.connect(uri) as websocket:
-        cmd = list("pwd")
+        cmd = list("ping")
         print(f"Connected to WebSocket server at {uri}")
         
         async def send_message(message):
@@ -59,14 +59,13 @@ async def connect_to_websocket(uri):
         #     user_input = input()
         #     if user_input.lower() == 'exit':
         #         break
+
+        #string format
         SESSION_ID = 1
         DEVICE_UID = 1
-        await send_message(f"2probe")
-        response = await receive_message()
 
-        await send_message(f"5")
+        await send_message(f"5") #vital part
         await send_message(f'42["authentication",{{"token":"{SESSION_ID}","uuid":"{DEVICE_UID}","target":{{"hostos":true}}}}]')
-        await send_message(f"5")
         await receive_message()
         await receive_message()
         await receive_message()
@@ -82,22 +81,17 @@ async def connect_to_websocket(uri):
         await receive_message()
         await send_message('42["data","\\r"]')
         await receive_message()
-        for x in cmd:
-            await send_message(f'42["data","{x}"]')
-            await receive_message()
-        await send_message('42["data","\\r"]')
-        await receive_message()
-        await receive_message()
+
         await websocket.close()
         print("WebSocket connection closed")
 
 # Main function to run the process
 async def main():
-    sid = get_initial_connection(get_url_string())
-    websocket_url = f'wss://terminal.balena-devices.com/socket.io/?EIO=4&transport=websocket&sid={sid}'
+    sid = get_initial_connection(get_url_string()) #vital part1
+    websocket_url = f'wss://terminal.balena-devices.com/socket.io/?EIO=4&transport=websocket&sid={sid}' 
     print(sid)
-    secondStrangeRequest(f'{get_url_string()}&sid={sid}',"40")
-    await connect_to_websocket(websocket_url)
+    secondStrangeRequest(f'{get_url_string()}&sid={sid}',"40") #vital part2
+    await connect_to_websocket(websocket_url) #websocket connection
 
 
 if __name__ == "__main__":
