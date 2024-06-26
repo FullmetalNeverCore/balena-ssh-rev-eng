@@ -75,8 +75,8 @@ async def connect_to_websocket(uri):
             print(f"< Received: {message}")
             return message
 
-        SESSION_ID = "jSdSVT3dhNRSmZCQacJKdhOMNmxutbwv"
-        DEVICE_UID = "ff83db242d8dcc5337a09dd124fb6f45"
+        SESSION_ID = 1
+        DEVICE_UID = 1
         await send_message(f"2probe")
         response = await receive_message()
 
